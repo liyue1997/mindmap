@@ -1,7 +1,7 @@
 <img src="./public/mindmap.jpg" width="300"/>
 
 # 思维导图Vue2组件
-
+> 孙晓燕和李岳基于@hellowuxin/mindmap优化改进，并依据开源政策向大家分享
 > 一个由[MindNode](https://mindnode.com)启发的思维导图Vue组件，基于d3.js实现  
 > 目前实现的功能有基本的编辑、拖移、缩放、撤销、上下文菜单、折叠...
 

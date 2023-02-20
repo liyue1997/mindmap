@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="buttonList right-bottom">
-      <button v-show="theme" class="icon" ref="theme" type="button">
+      <button v-show="theme" class="icon" ref="theme" type="button" @click="theme()">
         <i class="theme"></i>
       </button>
       <button v-show="gps" class="icon" ref="gps" type="button" @click="makeCenter()">
@@ -335,6 +335,11 @@ export default class MindMap extends Vue {
         break
     }
     this.downloadFile(content, filename)
+  }
+  async theme() { // 切换展示风格
+    await d3.transition().end().then(() => {
+      // this.mindmapSvg.call(this.zoom.translateTo, 0, 0)
+    })
   }
   async makeCenter() { // 居中
     await d3.transition().end().then(() => {
