@@ -24,6 +24,9 @@
       </div>
     </div>
     <div class="buttonList right-bottom">
+      <button v-show="theme" class="icon" ref="theme" type="button">
+        <i class="theme"></i>
+      </button>
       <button v-show="gps" class="icon" ref="gps" type="button" @click="makeCenter()">
         <i class="gps"></i>
       </button>
@@ -99,6 +102,7 @@ export default class MindMap extends Vue {
   @Prop({ default: true }) contextMenu!: boolean
   @Prop({ default: true }) zoomable!: boolean
   @Prop({ default: true }) showUndo!: boolean
+  @Prop({ default: true }) theme!: boolean
   @Prop({ default: 4 }) strokeWidth!: number
   @Model('change', { required: true }) value!: Array<Data>
 
