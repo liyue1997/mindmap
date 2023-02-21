@@ -34,6 +34,7 @@
                     :download="options.download.value"
                     @updateNodeName="updateNodeName"
                     @click="click"
+                    @changeTheme="changeTheme"
                   ></mindmap>
                   <v-divider vertical></v-divider>
                 </div>
@@ -128,6 +129,9 @@ export default class App extends Vue {
   }
   click(...args: any) {
     console.log('click', ...args)
+  }
+  changeTheme(...args: any) {
+    console.log('changeTheme', ...args)
   }
   mounted() {}
 }

@@ -24,6 +24,12 @@
       </div>
     </div>
     <div class="buttonList right-bottom">
+      <button v-show="zoomin" class="icon" ref="zoomin" type="button" @click="fitin()">
+        <i class="zoomin"></i>
+      </button>
+      <button v-show="zoomout" class="icon" ref="zoomout" type="button" @click="fitout()">
+        <i class="zoomout"></i>
+      </button>
       <button v-show="theme" class="icon" ref="theme" type="button" @click="changeTheme()">
         <i class="theme"></i>
       </button>
@@ -103,6 +109,8 @@ export default class MindMap extends Vue {
   @Prop({ default: true }) zoomable!: boolean
   @Prop({ default: true }) showUndo!: boolean
   @Prop({ default: true }) theme!: boolean
+  @Prop({ default: true }) zoomin!: boolean
+  @Prop({ default: true }) zoomout!: boolean
   @Prop({ default: 4 }) strokeWidth!: number
   @Model('change', { required: true }) value!: Array<Data>
 
@@ -336,9 +344,25 @@ export default class MindMap extends Vue {
     }
     this.downloadFile(content, filename)
   }
+  async fitin() { // 缩小
+    await d3.transition().end().then(() => {
+      const { mindmapSvg, zoom } = this
+      const current = d3.zoomTransform(this.$refs.svg)
+      const k = current.k + 0.04
+      zoom.scaleTo(mindmapSvg, k)
+    })
+  }
+  async fitout() { // 放大
+    await d3.transition().end().then(() => {
+      const { mindmapSvg, zoom } = this
+      const current = d3.zoomTransform(this.$refs.svg)
+      const k = current.k - 0.04
+      zoom.scaleTo(mindmapSvg, k)
+    })
+  }
   async changeTheme() { // 切换展示风格
     await d3.transition().end().then(() => {
-      // this.mindmapSvg.call(this.zoom.translateTo, 0, 0)
+      this.$emit('changeTheme')
     })
   }
   async makeCenter() { // 居中
