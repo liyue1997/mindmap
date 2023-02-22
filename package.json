@@ -1,6 +1,6 @@
 {
   "name": "@sunxy98/mindmap",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Mindmap Vue Component",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -118,9 +118,9 @@
     }
   },
   "bugs": {
-    "url": "https://github.com/hellowuxin/mindmap/issues"
+    "url": "https://github.com/sxy98/mindmap/issues"
   },
-  "homepage": "https://github.com/hellowuxin/mindmap#readme",
+  "homepage": "https://github.com/sxy98/mindmap#readme",
   "keywords": [
     "mindmap",
     "vue",
@@ -129,6 +129,6 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hellowuxin/mindmap.git"
+    "url": "git+https://github.com/sxy98/mindmap.git"
   }
 }
