@@ -1,9 +1,10 @@
 <img src="./public/mindmap.jpg" width="300"/>
 
 # 思维导图Vue2组件
-> 孙晓燕和李岳基于@hellowuxin/mindmap优化改进，并依据开源政策向大家分享
+> 孙晓燕和李岳基于@hellowuxin/mindmap优化改进，并依据开源政策向大家分享。
 > 一个由[MindNode](https://mindnode.com)启发的思维导图Vue组件，基于d3.js实现  
 > 目前实现的功能有基本的编辑、拖移、缩放、撤销、上下文菜单、折叠...
+> 新增功能包括：换肤、拖拉组件实现缩放
 
 ## 安装
 
@@ -95,4 +96,4 @@ export default {
 - [ ] 导出多种格式
 - [ ] 设置节点的宽高
 - [ ] 多个根节点
-- [ ] ...
+- [ ] v-slider组件 项目中会出现 Cannot readpropertiesof undefined (reading 'rt1) 异常，需移除

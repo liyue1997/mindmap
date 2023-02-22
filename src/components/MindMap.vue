@@ -24,24 +24,19 @@
       </div>
     </div>
     <div class="buttonList right-bottom">
-      <button v-show="zoomin" class="icon" ref="zoomin" type="button" @click="fitin()">
-        <i class="zoomin"></i>
-      </button>
-      <button v-show="zoomout" class="icon" ref="zoomout" type="button" @click="fitout()">
-        <i class="zoomout"></i>
-      </button>
-      <button v-show="theme" class="icon" ref="theme" type="button" @click="changeTheme()">
+      <button v-show="theme" class="icon" ref="theme" type="button" @click="changeTheme()" style="margin-left: auto;">
         <i class="theme"></i>
       </button>
-      <button v-show="gps" class="icon" ref="gps" type="button" @click="makeCenter()">
+      <button v-show="gps" class="icon" ref="gps" type="button" @click="makeCenter()" style="margin-left: auto;">
         <i class="gps"></i>
       </button>
-      <button v-show="fitView" class="icon" ref="fitView" type="button" @click="fitContent()">
+      <button v-show="fitView" class="icon" ref="fitView" type="button" @click="fitContent()" style="margin-left: auto;">
         <i class="fitView"></i>
       </button>
-      <button v-show="download" class="icon" ref="download" type="button" @click="showPopUps=true">
+      <button v-show="download" class="icon" ref="download" type="button" @click="showPopUps=true" style="margin-left: auto;">
         <i class="download"></i>
       </button>
+      <v-slider hide-details v-model="curZoom" label="比例" :thumb-size="20"  thumb-label style="width:120px" ></v-slider>
     </div>
     <div class="buttonList top-right">
       <button v-show="showUndo" class="icon" :class="{disabled: !canUndo}" ref="undo"
@@ -132,6 +127,13 @@ export default class MindMap extends Vue {
   onYSpacingChanged() { this.updateMindmap() }
   @Watch('zoomable')
   onZoomableChanged(val: boolean) { this.makeZoom(val) }
+  @Watch('curZoom')
+  onZoomChanged(val: number) {
+    if (val === 0) {
+      val = 1
+    }
+    this.fitZoom(val * this.curZoomCenter / 50.0)
+  }
 
   $refs!: {
     mindmap: HTMLDivElement
@@ -179,6 +181,8 @@ export default class MindMap extends Vue {
   link = d3.linkHorizontal().x((d) => d[0]).y((d) => d[1])
   zoom = d3.zoom() as d3.ZoomBehavior<Element, FlexNode>
   history = new History()
+  curZoom = 50 // 默认居中时为50
+  curZoomCenter =2 // 居中时的比例
 
   get mmStyle() {
     return {
@@ -344,6 +348,12 @@ export default class MindMap extends Vue {
     }
     this.downloadFile(content, filename)
   }
+  async fitZoom(val: number) { // 设置比例
+    await d3.transition().end().then(() => {
+      const { mindmapSvg, zoom } = this
+      zoom.scaleTo(mindmapSvg, val)
+    })
+  }
   async fitin() { // 缩小
     await d3.transition().end().then(() => {
       const { mindmapSvg, zoom } = this
@@ -379,6 +389,8 @@ export default class MindMap extends Vue {
       const multiple = Math.min(multipleX, multipleY)
 
       this.mindmapSvg.transition(this.easePolyInOut as any).call(this.zoom.scaleTo, multiple)
+      this.curZoom = 50
+      this.curZoomCenter = multiple
     })
   }
   // 数据操作
