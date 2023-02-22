@@ -36,7 +36,7 @@
       <button v-show="download" class="icon" ref="download" type="button" @click="showPopUps=true" style="margin-left: auto;">
         <i class="download"></i>
       </button>
-      <v-slider hide-details v-model="curZoom" label="比例" :thumb-size="20"  thumb-label style="width:120px" ></v-slider>
+      <VueSlider  v-model="curZoom" label="比例" style="width:80px" ></VueSlider>
     </div>
     <div class="buttonList top-right">
       <button v-show="showUndo" class="icon" :class="{disabled: !canUndo}" ref="undo"
@@ -86,9 +86,11 @@ import { flextree } from 'd3-flextree'
 import ImData from '../ts/ImData'
 import History from '../ts/History'
 import toMarkdown from '../ts/toMarkdown'
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/antd.css'
 
 let mmdata: ImData // 思维导图数据
-@Component
+@Component({ components: { VueSlider } })
 export default class MindMap extends Vue {
   @Prop() width: number | undefined
   @Prop() height: number | undefined
