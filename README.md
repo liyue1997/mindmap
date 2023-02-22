@@ -1,9 +1,15 @@
 <img src="./public/mindmap.jpg" width="300"/>
 
 # 思维导图Vue2组件
-> 孙晓燕和李岳基于@hellowuxin/mindmap优化改进，并依据开源政策向大家分享。
-> 一个由[MindNode](https://mindnode.com)启发的思维导图Vue组件，基于d3.js实现  
+[![NPM version](https://img.shields.io/npm/v/@sunxy98/mindmap)](https://www.npmjs.com/package/@sunxy98/mindmap)
+[![NPM monthly downloads](https://img.shields.io/npm/dm/@sunxy98/mindmap)](https://www.npmjs.com/package/@sunxy98/mindmap)
+[![NPM total downloads](https://img.shields.io/npm/dt/@sunxy98/mindmap)](https://www.npmjs.com/package/@sunxy98/mindmap)
+
+> Mark and Rossee基于@hellowuxin/mindmap优化改进，并依据开源政策向大家分享。
+> 一个由[MindNode](https://mindnode.com)启发的思维导图Vue组件，基于d3.js实现。
+> 
 > 目前实现的功能有基本的编辑、拖移、缩放、撤销、上下文菜单、折叠...
+> 
 > 新增功能包括：换肤、拖拉组件实现缩放
 
 ## 安装
@@ -14,25 +20,26 @@ npm install @sunxy98/mindmap
 
 ## PROPS
 
-| Name        | Type   | Default   | Description          |
-| ---         | ---    | ---       | ---                  |
-| v-model     | Array  | undefined | 设置思维导图数据        |
-| width       | Number | 100%      | 设置组件宽度           |
-| height      | Number | undefined | 设置组件高度           |
-| xSpacing    | Number | 80        | 设置节点横向间隔        |
-| ySpacing    | Number | 20        | 设置节点纵向间隔        |
-| strokeWidth | Number | 4         | 设置连线的宽度          |
-| draggable   | Boolean| true      | 设置节点是否可拖拽      |
-| gps         | Boolean| true      | 是否显示居中按钮        |
-| fitView     | Boolean| true      | 是否显示缩放按钮        |
-| showNodeAdd | Boolean| true      | 是否显示添加节点按钮     |
-| keyboard    | Boolean| true      | 是否响应键盘事件        |
-| contextMenu | Boolean| true      | 是否响应右键菜单        |
-| zoomable    | Boolean| true      | 是否可缩放、拖移        |
-| showUndo    | Boolean| true      | 是否显示撤销重做按钮     |
-| download    | Boolean| true      | 是否显示下载按钮        |
+| Name        | Type   | Default   | Description |
+| ---         | ---    | ---       |-------------|
+| v-model     | Array  | undefined | 设置思维导图数据    |
+| width       | Number | 100%      | 设置组件宽度      |
+| height      | Number | undefined | 设置组件高度      |
+| xSpacing    | Number | 80        | 设置节点横向间隔    |
+| ySpacing    | Number | 20        | 设置节点纵向间隔    |
+| strokeWidth | Number | 4         | 设置连线的宽度     |
+| draggable   | Boolean| true      | 设置节点是否可拖拽   |
+| theme       | Boolean| true      | 是否显示换肤按钮    |
+| gps         | Boolean| true      | 是否显示居中按钮    |
+| fitView     | Boolean| true      | 是否显示缩放按钮    |
+| showNodeAdd | Boolean| true      | 是否显示添加节点按钮  |
+| keyboard    | Boolean| true      | 是否响应键盘事件    |
+| contextMenu | Boolean| true      | 是否响应右键菜单    |
+| zoomable    | Boolean| true      | 是否可缩放、拖移    |
+| showUndo    | Boolean| true      | 是否显示撤销重做按钮  |
+| download    | Boolean| true      | 是否显示下载按钮    |
 
-## EVENTS
+## 事件
 
 | Name           | arguments | Description                    |
 | ---            | ---       | ---                            |
@@ -96,4 +103,3 @@ export default {
 - [ ] 导出多种格式
 - [ ] 设置节点的宽高
 - [ ] 多个根节点
-- [ ] v-slider组件 项目中会出现 Cannot readpropertiesof undefined (reading 'rt1) 异常，需移除
