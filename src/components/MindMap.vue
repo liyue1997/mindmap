@@ -24,18 +24,19 @@
       </div>
     </div>
     <div class="buttonList right-bottom">
-      <button v-show="theme" class="icon" ref="theme" type="button" @click="changeTheme()">
+      <button v-show="theme" class="icon" ref="theme" type="button" @click="changeTheme()" style="margin-left: auto;">
         <i class="theme"></i>
       </button>
-      <button v-show="gps" class="icon" ref="gps" type="button" @click="makeCenter()">
+      <button v-show="gps" class="icon" ref="gps" type="button" @click="makeCenter()" style="margin-left: auto;">
         <i class="gps"></i>
       </button>
-      <button v-show="fitView" class="icon" ref="fitView" type="button" @click="fitContent()">
+      <button v-show="fitView" class="icon" ref="fitView" type="button" @click="fitContent()" style="margin-left: auto;">
         <i class="fitView"></i>
       </button>
-      <button v-show="download" class="icon" ref="download" type="button" @click="showPopUps=true">
+      <button v-show="download" class="icon" ref="download" type="button" @click="showPopUps=true" style="margin-left: auto;">
         <i class="download"></i>
       </button>
+      <VueSlider  v-model="curZoom" label="比例" style="width:80px" ></VueSlider>
     </div>
     <div class="buttonList top-right">
       <button v-show="showUndo" class="icon" :class="{disabled: !canUndo}" ref="undo"
@@ -85,9 +86,11 @@ import { flextree } from 'd3-flextree'
 import ImData from '../ts/ImData'
 import History from '../ts/History'
 import toMarkdown from '../ts/toMarkdown'
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/antd.css'
 
 let mmdata: ImData // 思维导图数据
-@Component
+@Component({ components: { VueSlider } })
 export default class MindMap extends Vue {
   @Prop() width: number | undefined
   @Prop() height: number | undefined
@@ -103,6 +106,8 @@ export default class MindMap extends Vue {
   @Prop({ default: true }) zoomable!: boolean
   @Prop({ default: true }) showUndo!: boolean
   @Prop({ default: true }) theme!: boolean
+  @Prop({ default: true }) zoomin!: boolean
+  @Prop({ default: true }) zoomout!: boolean
   @Prop({ default: 4 }) strokeWidth!: number
   @Model('change', { required: true }) value!: Array<Data>
 
@@ -124,6 +129,13 @@ export default class MindMap extends Vue {
   onYSpacingChanged() { this.updateMindmap() }
   @Watch('zoomable')
   onZoomableChanged(val: boolean) { this.makeZoom(val) }
+  @Watch('curZoom')
+  onZoomChanged(val: number) {
+    if (val === 0) {
+      val = 1
+    }
+    this.fitZoom(val * this.curZoomCenter / 50.0)
+  }
 
   $refs!: {
     mindmap: HTMLDivElement
@@ -171,6 +183,8 @@ export default class MindMap extends Vue {
   link = d3.linkHorizontal().x((d) => d[0]).y((d) => d[1])
   zoom = d3.zoom() as d3.ZoomBehavior<Element, FlexNode>
   history = new History()
+  curZoom = 50 // 默认居中时为50
+  curZoomCenter =2 // 居中时的比例
 
   get mmStyle() {
     return {
@@ -336,9 +350,31 @@ export default class MindMap extends Vue {
     }
     this.downloadFile(content, filename)
   }
+  async fitZoom(val: number) { // 设置比例
+    await d3.transition().end().then(() => {
+      const { mindmapSvg, zoom } = this
+      zoom.scaleTo(mindmapSvg, val)
+    })
+  }
+  async fitin() { // 缩小
+    await d3.transition().end().then(() => {
+      const { mindmapSvg, zoom } = this
+      const current = d3.zoomTransform(this.$refs.svg)
+      const k = current.k + 0.04
+      zoom.scaleTo(mindmapSvg, k)
+    })
+  }
+  async fitout() { // 放大
+    await d3.transition().end().then(() => {
+      const { mindmapSvg, zoom } = this
+      const current = d3.zoomTransform(this.$refs.svg)
+      const k = current.k - 0.04
+      zoom.scaleTo(mindmapSvg, k)
+    })
+  }
   async changeTheme() { // 切换展示风格
     await d3.transition().end().then(() => {
-      // this.mindmapSvg.call(this.zoom.translateTo, 0, 0)
+      this.$emit('changeTheme')
     })
   }
   async makeCenter() { // 居中
@@ -355,6 +391,8 @@ export default class MindMap extends Vue {
       const multiple = Math.min(multipleX, multipleY)
 
       this.mindmapSvg.transition(this.easePolyInOut as any).call(this.zoom.scaleTo, multiple)
+      this.curZoom = 50
+      this.curZoomCenter = multiple
     })
   }
   // 数据操作
